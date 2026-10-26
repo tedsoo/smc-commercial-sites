@@ -19,6 +19,15 @@ const site = require('./data/site');
 const properties = require('./data/properties');
 const tenants = require('./data/tenants');
 const news = require('./data/news').slice().sort((a, b) => b.date.localeCompare(a.date));
+const photos = require('./data/photos');
+const CACHE = path.join(ROOT, '.cache', 'photos');
+
+// Download licensed stock photos (data/photos.js) before rendering. Never fails the build.
+try {
+  require('child_process').execFileSync(process.execPath, [path.join(ROOT, 'scripts', 'fetch-photos.js')], { stdio: 'inherit', timeout: 120000 });
+} catch (e) {
+  console.warn('! Stock photo download skipped: ' + e.message);
+}
 
 const BUILD_ID = (process.env.COMMIT_REF || '').slice(0, 8) || Date.now().toString(36);
 const C = site.contacts;
@@ -76,11 +85,29 @@ const ICON = {
   play: '<svg class="i-play" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>',
 };
 
-/** Photo slot: real image if present in src/img, otherwise a branded placeholder. */
+/** Stock photo for a slot, if listed in data/photos.js and downloaded to the cache. */
+const usedStock = new Map();
+function stockFor(relNoExt) {
+  const key = relNoExt.replace(/^img\//, '');
+  const s = photos[key];
+  return s && fs.existsSync(path.join(CACHE, key + '.jpg')) ? s : null;
+}
+/** Public path of a slot's image: real photo first, then stock, else null. */
+function imagePath(relNoExt) {
+  return findAsset(relNoExt) || (stockFor(relNoExt) ? '/' + relNoExt + '.jpg' : null);
+}
+
+/** Photo slot: real photo from src/img, else a licensed stock photo, else a branded placeholder. */
 function media(relNoExt, { alt, size, eager = false, prop = null }) {
+  const loading = eager ? 'fetchpriority="high"' : 'loading="lazy"';
   const found = findAsset(relNoExt);
   if (found) {
-    return `<div class="media"><img src="${found}" alt="${esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div>`;
+    return `<div class="media"><img src="${found}" alt="${esc(alt)}" ${loading} decoding="async"></div>`;
+  }
+  const stock = stockFor(relNoExt);
+  if (stock) {
+    usedStock.set(relNoExt.replace(/^img\//, ''), stock);
+    return `<div class="media is-stock"><img src="/${relNoExt}.jpg" alt="${esc(stock.alt)}" ${loading} decoding="async"><span class="stock-tag" aria-hidden="true">Representative photo</span><span class="slot-label">Stock photo · replace with src/${esc(relNoExt)}.jpg · ${esc(size)}</span></div>`;
   }
   const tint = prop && prop.tint ? ` style="--ph-a:${prop.tint[0]};--ph-b:${prop.tint[1]}"` : '';
   return `<div class="media ph"${tint} role="img" aria-label="${esc(alt)}"><span class="ph-mark">${ICON.storefront}</span><span class="slot-label">Photo slot · src/${esc(relNoExt)}.jpg · ${esc(size)}</span></div>`;
@@ -200,6 +227,7 @@ function footer() {
     <ul>
       <li><a href="${esc(B.privacyUrl)}" rel="noopener">Privacy Policy</a></li>
       <li><a href="/contact.html#accessibility">Accessibility</a></li>
+      ${usedStock.size ? '<li><a href="/photo-credits.html">Photo credits</a></li>' : ''}
       <li><a href="/sitemap.xml">Sitemap</a></li>
     </ul>
   </div>
@@ -212,7 +240,7 @@ function previewBadge() {
 
 function layout({ title, description, active, body, subscribe = true, jsonld = null, ogImage = null }) {
   const fullTitle = title ? `${title} | ${B.name} Properties` : `${B.name} Properties | McHenry Village, Northgate Plaza & Lakeside Shopping Center`;
-  const og = ogImage || findAsset('img/og') || findAsset(`img/${properties[0].slug}/hero`);
+  const og = ogImage || imagePath('img/og') || imagePath(`img/${properties[0].slug}/hero`);
   const fontsHead = selfHostedFonts
     ? FONT_FILES.filter(f => f[3] === 'normal').map(f => `<link rel="preload" href="/assets/fonts/${f[1]}" as="font" type="font/woff2" crossorigin>`).join('\n')
     : `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -454,7 +482,7 @@ properties.forEach(p => {
     active: 'properties',
     description: `${p.name} is a ${p.type.toLowerCase()} in ${loc(p)} anchored by ${p.anchors.join(' and ')}. Available space, tenant directory, hours, and directions.`,
     jsonld,
-    ogImage: findAsset(`img/${p.slug}/hero`),
+    ogImage: imagePath(`img/${p.slug}/hero`),
     body: `
 <section class="hero prop-hero" aria-labelledby="prop-h">
   ${media(`img/${p.slug}/hero`, { alt: `${p.name}, ${loc(p)}`, size: '2400×1350', eager: true, prop: p })}
@@ -838,6 +866,35 @@ pages.push({
 </section>`,
 });
 
+/* Photo credits ------------------------------------------------------------------ */
+pages.push({
+  file: 'photo-credits.html',
+  title: 'Photo credits',
+  active: '',
+  subscribe: false,
+  description: 'Credits and licenses for photography used on the SMC Commercial Properties website.',
+  body: (() => {
+    const items = [...usedStock.entries()].map(([key, s]) => `<li class="credit">
+  <div class="credit-img"><img src="/img/${key}.jpg" alt="${esc(s.alt)}" loading="lazy" decoding="async"></div>
+  <p><strong>${esc(s.alt)}</strong><br>Photo by <a href="${esc(s.page)}" target="_blank" rel="noopener">${esc(s.credit)}</a> on ${esc(s.source)} · <a href="${esc(s.licenseUrl)}" target="_blank" rel="noopener">${esc(s.license)}</a></p>
+</li>`).join('');
+    return `
+<section class="page-hero">
+  <div class="wrap">
+    <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Photo credits</li></ol>
+    <p class="kicker kicker-light">Photo credits</p>
+    <h1 class="display-xl">Photography on <em>this site.</em></h1>
+    <p class="lede">${items ? 'Some images are licensed stock photography. They are marked “Representative photo” and may not show our properties.' : 'All photos on this site show our properties.'}</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    ${items ? `<ul class="credits">${items}</ul>` : ''}
+  </div>
+</section>`;
+  })(),
+});
+
 /* 404 -------------------------------------------------------------------------- */
 pages.push({
   file: '404.html',
@@ -875,6 +932,10 @@ function copyDir(from, to) {
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 copyDir(path.join(SRC, 'assets'), path.join(OUT, 'assets'));
+for (const key of usedStock.keys()) {
+  fs.mkdirSync(path.dirname(path.join(OUT, 'img', key)), { recursive: true });
+  fs.copyFileSync(path.join(CACHE, key + '.jpg'), path.join(OUT, 'img', key + '.jpg'));
+}
 copyDir(path.join(SRC, 'img'), path.join(OUT, 'img'));
 copyDir(path.join(SRC, 'docs'), path.join(OUT, 'docs'));
 
