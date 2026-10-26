@@ -19,11 +19,11 @@ const SPLIT = { w: 1400, h: 1120 };
 
 module.exports = {
   'mchenry-village/hero': {
-    ...UNSPLASH, ...HERO,
-    src: 'https://images.unsplash.com/photo-1791101128594-af2e9582b43d',
-    page: 'https://unsplash.com/photos/outdoor-cafe-tables-in-sunlit-square-i-BApYgNIJk',
-    credit: 'Adrien Olichon',
-    alt: 'Café tables under large umbrellas on a sunny, landscaped patio',
+    ...UNSPLASH, ...HERO, crop: 'top',
+    src: 'https://images.unsplash.com/photo-1762926627710-6143e653a7d4',
+    page: 'https://unsplash.com/photos/outdoor-seating-area-with-plants-and-buildings-NnAG2eV3gyo',
+    credit: 'shawn kim',
+    alt: 'Wood pergola with string lights over a landscaped garden patio',
   },
   'mchenry-village/feature': {
     ...UNSPLASH, ...FEATURE,
@@ -69,9 +69,9 @@ module.exports = {
   },
   'about/story': {
     ...UNSPLASH, ...SPLIT,
-    src: 'https://images.unsplash.com/photo-1781625182186-334ee5f57b7f',
-    page: 'https://unsplash.com/photos/outdoor-cafe-tables-and-chairs-on-a-wet-city-sidewalk-EOfScOjHKzs',
-    credit: 'Sergej (@skstrannik)',
-    alt: 'Sidewalk café tables lined with planters',
+    src: 'https://images.unsplash.com/photo-1760565030346-4b947220fe3a',
+    page: 'https://unsplash.com/photos/hand-holding-colorful-shopping-bags-against-a-light-background-uaWMyAIpF2g',
+    credit: 'Iuliia Pilipeichenko',
+    alt: 'A hand holding colorful shopping bags',
   },
 };

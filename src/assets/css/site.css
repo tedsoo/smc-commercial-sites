@@ -276,7 +276,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* Property hero */
 .prop-hero { min-height: min(72vh, 680px); display: flex; flex-direction: column; justify-content: flex-end; padding: 0; }
-.prop-hero .hero-shade { background: linear-gradient(0deg, rgba(5,29,53,.94) 0%, rgba(5,29,53,.55) 45%, rgba(5,29,53,.25) 100%); }
+.prop-hero .hero-shade { background: linear-gradient(0deg, rgba(5,29,53,.94) 0%, rgba(5,29,53,.6) 45%, rgba(5,29,53,.35) 100%), linear-gradient(90deg, rgba(5,29,53,.5) 0%, transparent 65%); }
 .prop-hero .media { position: absolute; inset: 0; z-index: -2; }
 .prop-hero .wrap { padding-top: 72px; padding-bottom: 120px; }
 .prop-hero .crumbs { margin-bottom: 40px; }
