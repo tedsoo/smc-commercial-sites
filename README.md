@@ -26,8 +26,17 @@ All content lives in `/data`. Edit a file, commit, and Netlify rebuilds the site
 - `data/tenants.js` – tenant directory
 - `data/news.js` – news items
 - `data/site.js` – brand name, phone numbers, emails
+- `data/photos.js` – licensed stock photos used until real property photos are added
 
 Photos go in `src/img/` and brochures in `src/docs/` (see the README in each folder).
+A real photo in `src/img/` always replaces the stock photo for that slot.
+
+### Stock photos
+
+Stock photos come from Unsplash (free for commercial use under the Unsplash License).
+The build downloads them and serves them from this site, tags each one "Representative
+photo", and lists credits on `/photo-credits.html`. Only add photos whose license allows
+commercial use, and record the photographer, page, and license in `data/photos.js`.
 
 **This repository is public.** Only add information that is meant for the public
 website. No rents, lease terms, NOI, tenant contacts, or internal reports.

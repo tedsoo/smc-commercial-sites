@@ -1,7 +1,9 @@
 # Photos
 
-Drop property photos here using the names below. Until a file exists, the site shows a
-branded SAMI navy/gold placeholder, so nothing breaks while photos are being gathered.
+Drop property photos here using the names below. Until a real photo exists, the site uses
+the licensed stock photo listed for that slot in `data/photos.js` (tagged "Representative
+photo" and credited on /photo-credits.html). If neither exists, a branded SAMI navy/gold
+placeholder shows, so nothing breaks while photos are being gathered.
 Use `.jpg`, `.png`, or `.webp`. Keep each file under ~500 KB (export at ~80% JPEG quality).
 
 | File | Size (px) | Where it shows |
