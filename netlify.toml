@@ -1,0 +1,25 @@
+# SMC Commercial Properties — Netlify build settings
+# Netlify installs the font packages from package.json, then runs the build.
+[build]
+  command = "node build.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# CSS/JS links carry a ?v=<commit> cache-buster, so assets can be cached.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Images keep Netlify's default caching (revalidate on each visit), so a
+# photo swapped in under the same file name shows up right away.
