@@ -197,7 +197,7 @@ function footer() {
   <div class="wrap footer-top">
     <div>
       ${wordmark()}
-      <p class="footer-blurb">Grocery-anchored neighborhood centers in California and Nevada, owned and managed by ${esc(B.legalName)} — in real estate since ${B.foundedYear}.</p>
+      <p class="footer-blurb">Neighborhood shopping centers in California and Nevada, owned and managed by ${esc(B.legalName)} — in real estate since ${B.foundedYear}.</p>
       <div class="social"><a href="${esc(B.linkedinUrl)}" rel="noopener" target="_blank" aria-label="LinkedIn">${ICON.linkedin}</a></div>
     </div>
     <div>
@@ -375,7 +375,7 @@ pages.push({
   file: 'index.html',
   title: '',
   active: 'home',
-  description: `Grocery-anchored neighborhood shopping centers in Modesto, Carson City, and Burbank — McHenry Village, Northgate Plaza, and Lakeside Shopping Center. Leasing, directory, and visitor information.`,
+  description: `Neighborhood shopping centers in Modesto, Carson City, and Burbank — McHenry Village, Northgate Plaza, and Lakeside Shopping Center. Leasing, directory, and visitor information.`,
   body: (() => {
     const slides = properties.map((p, i) => `<figure class="hero-slide${i === 0 ? ' is-active' : ''}" aria-hidden="${i === 0 ? 'false' : 'true'}">${media(`img/${p.slug}/hero`, { alt: `${p.name}, ${loc(p)}`, size: '2400×1350', eager: i === 0, prop: p })}</figure>`).join('');
     const tabs = properties.map((p, i) => `<button class="hero-tab${i === 0 ? ' is-active' : ''}" type="button" role="tab" aria-selected="${i === 0}" data-href="${pageOf(p)}" data-name="${esc(p.name)}"><span class="ht-progress" aria-hidden="true"></span><span class="ht-loc">${esc(loc(p))}</span><span class="ht-name">${esc(p.name)}</span></button>`).join('');
@@ -385,7 +385,7 @@ pages.push({
       [String(tenants.length), 'Merchants & services'],
       [String(B.foundedYear), 'Managing real estate since'],
     ];
-    const anchors = properties.map(p => p.anchors[0]);
+    const anchors = [...new Set(properties.flatMap(p => p.anchors))];
     return `
 <section class="hero hero-home" data-carousel data-interval="7000" aria-roledescription="carousel" aria-label="Featured properties">
   <div class="hero-slides">${slides}</div>
@@ -393,7 +393,7 @@ pages.push({
   <div class="wrap hero-content">
     <p class="kicker kicker-light">${esc(B.name)} Properties</p>
     <h1 class="display-xl">Neighborhood retail, <em>managed to a higher standard.</em></h1>
-    <p class="hero-lede">Grocery-anchored shopping centers in Modesto, Carson City, and Burbank — owned and operated by a team that has been managing real estate since ${B.foundedYear}.</p>
+    <p class="hero-lede">Neighborhood shopping centers in Modesto, Carson City, and Burbank — owned and operated by a team that has been managing real estate since ${B.foundedYear}.</p>
     <div class="btn-row">
       <a class="btn btn-gold" href="#centers">Explore our centers</a>
       <a class="btn btn-ghost" href="/leasing.html#availability">Find available space</a>
@@ -412,7 +412,7 @@ pages.push({
 
 ${cardsSection({
   title: 'Explore our neighborhood centers.',
-  lede: 'Three everyday destinations, each anchored by a grocer and built around the errands, meals, and services people come back for every week.',
+  lede: 'Three everyday destinations, each built around the errands, meals, and services people come back for every week.',
   cta: '<a class="btn btn-line" href="/leasing.html#availability">View available space</a>',
 })}
 
@@ -424,7 +424,7 @@ ${cardsSection({
       <h2 id="lease-h" class="display-lg">Space to grow, where customers <em>already shop.</em></h2>
       <p class="lede">Our centers are built on weekly trips: groceries, prescriptions, banking, a quick meal. That steady traffic is what helps the shops and restaurants beside them thrive.</p>
       <ul class="checks">
-        <li>Grocery anchors at every center — ${anchors.map(esc).join(', ').replace(/, ([^,]*)$/, ', and $1')}</li>
+        <li>Anchored by ${anchors.map(esc).join(', ').replace(/, ([^,]*)$/, ', and $1')}</li>
         <li>Daily-needs mix of pharmacy, banking, dining, and services</li>
         <li>Owner-operated management that answers quickly and plans for the long term</li>
       </ul>
@@ -614,7 +614,7 @@ pages.push({
     const all = [];
     properties.forEach(p => (p.availability || []).forEach(a => all.push({ a, p })));
     const values = [
-      ['Grocery-anchored traffic', `Every center is anchored by a grocer — ${properties.map(p => p.anchors[0]).join(', ').replace(/, ([^,]*)$/, ', and $1')} — that brings customers back week after week.`],
+      ['Anchor-driven traffic', `Our centers are anchored by ${[...new Set(properties.flatMap(p => p.anchors))].join(', ').replace(/, ([^,]*)$/, ', and $1')} — destinations that bring customers back week after week.`],
       ['A daily-needs mix', 'Pharmacies, banks, quick-service dining, and personal services keep our centers busy across the whole day.'],
       ['Owner-operated', 'You work directly with the people who own and manage the property. Decisions are quick and conversations stay straightforward.'],
       ['Space that fits', 'From inline shops to larger-format space, we’ll work with you to find the right size, layout, and terms for your concept.'],
@@ -625,7 +625,7 @@ pages.push({
     <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Leasing</li></ol>
     <p class="kicker kicker-light">Leasing</p>
     <h1 class="display-xl">The right space, in centers built for <em>everyday trips.</em></h1>
-    <p class="lede">Grocery-anchored neighborhood centers in Modesto, Carson City, and Burbank, with space for retail, restaurant, and service users.</p>
+    <p class="lede">Neighborhood shopping centers in Modesto, Carson City, and Burbank, with space for retail, restaurant, and service users.</p>
     <div class="btn-row" style="margin-top:32px">
       <a class="btn btn-gold" href="#availability">See available space</a>
       <a class="btn btn-ghost" href="#inquire">Start an inquiry</a>
@@ -792,7 +792,7 @@ pages.push({
       <p class="kicker">Our story</p>
       <h2 id="story-h" class="display-lg">A long view of real estate.</h2>
       <p>${esc(B.legalName)} was founded in ${B.foundedYear} on a simple idea: investors can accomplish more by pooling their capital. More than six decades later, the firm — now ${esc(B.parentName)} — still takes the same disciplined, long-term approach.</p>
-      <p>Our commercial portfolio is made up of three grocery-anchored neighborhood centers: McHenry Village in Modesto, Northgate Plaza in Carson City, and Lakeside Shopping Center in Burbank. Each one serves its community with the essentials people need every week.</p>
+      <p>Our commercial portfolio is made up of three neighborhood shopping centers: McHenry Village in Modesto, Northgate Plaza in Carson City, and Lakeside Shopping Center in Burbank. Each one serves its community with the essentials people need every week.</p>
       <p><a class="arrow-link" href="${esc(B.corporateUrl)}" target="_blank" rel="noopener">Visit standardmanagement.com</a></p>
     </div>
   </div>

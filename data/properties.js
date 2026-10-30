@@ -7,10 +7,15 @@
 // Brochure: put a PDF at src/docs/<slug>-brochure.pdf and a download button appears.
 // Until a file exists, the site shows a branded placeholder.
 //
+// GLA, addresses, anchors and available suites were reviewed against property
+// management records on Oct 29, 2026.
+//
 // Availability rows: { suite, sf, use, available, placeholder }
 //   sf: number or null ("Contact leasing" is shown when null)
 //   placeholder: true marks a row leasing still needs to fill in.
 // Keep only public-facing facts here; this repo is public.
+
+const RETAIL = 'Retail / service';
 
 module.exports = [
   {
@@ -23,12 +28,9 @@ module.exports = [
     type: 'Lifestyle Center',
     tagline: 'Where community and commerce come together.',
     cardLine: 'Grocery-anchored lifestyle center serving north Modesto.',
-    address: ['McHenry Avenue & Roseburg Avenue', 'Modesto, CA 95350'],
-    addressVerify: true, // public listings show 1700 McHenry Ave — confirm which to publish
-    mapQuery: 'McHenry Village, McHenry Ave & Roseburg Ave, Modesto, CA 95350',
-    glaSF: 150000,
-    glaApprox: true,
-    glaVerify: true,
+    address: ['1700 McHenry Avenue', 'Modesto, CA 95350'],
+    mapQuery: '1700 McHenry Ave, Modesto, CA 95350',
+    glaSF: 275401,
     anchors: ['Sprouts Farmers Market', 'CVS Pharmacy'],
     description: [
       'McHenry Village is an open-air lifestyle center on McHenry Avenue, serving the north Modesto corridor. Sprouts Farmers Market and CVS Pharmacy anchor a mix of dining, wellness, fashion, and personal services.',
@@ -36,18 +38,29 @@ module.exports = [
     ],
     highlights: [
       'Grocery-anchored by Sprouts Farmers Market',
-      'CVS Pharmacy, national banks, and everyday services',
-      'Dining from quick-service to sit-down',
-      'Open-air layout with landscaped walkways',
+      'CVS Pharmacy and everyday services',
+      'Dining from Togo’s to Verona Cucina Italiana',
+      'Family fun at Sky Zone, Color Me Mine, and Juline School of Dance',
     ],
     hours: [
       ['Monday – Saturday', '9:00 AM – 9:00 PM'],
       ['Sunday', '10:00 AM – 7:00 PM'],
     ],
     availability: [
-      // A public broker listing shows a junior anchor space plus inline shops — confirm suites and sizes.
-      { suite: 'TBD', sf: null, use: 'Junior anchor', available: 'Now', placeholder: true },
-      { suite: 'TBD', sf: null, use: 'Inline retail', available: 'Now', placeholder: true },
+      { suite: '0013', sf: 2750, use: RETAIL, available: 'Now' },
+      { suite: '0019', sf: 1700, use: RETAIL, available: 'Now' },
+      { suite: '002E', sf: 2550, use: RETAIL, available: 'Now' },
+      { suite: '0043', sf: 1152, use: RETAIL, available: 'Now' },
+      { suite: '0061', sf: 6566, use: RETAIL, available: 'Now' },
+      { suite: '0062', sf: 2060, use: RETAIL, available: 'Now' },
+      { suite: '0079', sf: 1125, use: RETAIL, available: 'Now' },
+      { suite: '0091', sf: 2008, use: RETAIL, available: 'Now' },
+      { suite: '0110', sf: 6394, use: RETAIL, available: 'Now' },
+      { suite: '016A', sf: 2252, use: RETAIL, available: 'Now' },
+      { suite: '028C', sf: 6205, use: RETAIL, available: 'Now' },
+      { suite: '054A', sf: 1342, use: RETAIL, available: 'Now' },
+      { suite: '062F', sf: 1873, use: RETAIL, available: 'Now' },
+      { suite: '080A', sf: 920,  use: RETAIL, available: 'Now' },
     ],
     tint: ['#123E63', '#051D35'],
   },
@@ -58,32 +71,41 @@ module.exports = [
     name: 'Northgate Plaza',
     city: 'Carson City',
     state: 'NV',
-    postalCode: '89701',
+    postalCode: '89706',
     type: 'Neighborhood Center',
     tagline: 'Daily needs, done right.',
-    cardLine: 'Convenience center on North Carson Street, anchored by Smith’s.',
-    address: ['2523–2749 N. Carson Street', 'Carson City, NV 89701'],
-    mapQuery: '2523 N Carson St, Carson City, NV 89701',
-    glaSF: 85000,
-    glaApprox: true,
-    glaVerify: true,
-    anchors: ['Smith’s Food & Drug'],
+    cardLine: 'Neighborhood center on North Carson Street, anchored by Harbor Freight Tools and Dollar Tree.',
+    address: ['2523–2749 N. Carson Street', 'Carson City, NV 89706'],
+    mapQuery: '2523 N Carson St, Carson City, NV 89706',
+    glaSF: 151629,
+    anchors: ['Harbor Freight Tools', 'Dollar Tree'],
     description: [
-      'Northgate Plaza is a neighborhood convenience center on North Carson Street, anchored by Smith’s Food & Drug.',
-      'Quick-service dining, banking, automotive services, and medical offices make it a one-stop destination for the everyday errands of Carson City residents.',
+      'Northgate Plaza is a neighborhood center on North Carson Street, anchored by Harbor Freight Tools and Dollar Tree.',
+      'Quick-service dining, fitness, and State of Nevada service offices bring steady weekday traffic, making the center a convenient stop for Carson City residents.',
     ],
     highlights: [
-      'Grocery-anchored by Smith’s Food & Drug',
+      'Anchored by Harbor Freight Tools and Dollar Tree',
       'Frontage along North Carson Street',
-      'Quick-service dining from Starbucks to Panda Express',
-      'Auto, medical, and financial services on site',
+      'Quick-service dining from KFC and Wendy’s',
+      'Anytime Fitness, Talents Athletic Center, and State of Nevada offices on site',
     ],
     hours: [
       ['Monday – Saturday', '8:00 AM – 9:00 PM'],
       ['Sunday', '9:00 AM – 7:00 PM'],
     ],
     availability: [
-      { suite: 'TBD', sf: null, use: 'Inline retail / service', available: 'Now', placeholder: true },
+      { suite: '190',   sf: 6144,  use: RETAIL, available: 'Now' },
+      { suite: '2527',  sf: 6388,  use: RETAIL, available: 'Now' },
+      { suite: '2527A', sf: 1829,  use: RETAIL, available: 'Now' },
+      { suite: '2531',  sf: 5326,  use: RETAIL, available: 'Now' },
+      { suite: '2567',  sf: 1313,  use: RETAIL, available: 'Now' },
+      { suite: '2571',  sf: 14750, use: RETAIL, available: 'Now' },
+      { suite: '2571A', sf: 8000,  use: RETAIL, available: 'Now' },
+      { suite: '2575',  sf: 1534,  use: RETAIL, available: 'Now' },
+      { suite: '2589',  sf: 730,   use: RETAIL, available: 'Now' },
+      { suite: '2591',  sf: 1170,  use: RETAIL, available: 'Now' },
+      { suite: '275',   sf: 4729,  use: RETAIL, available: 'Now' },
+      { suite: '280',   sf: 1894,  use: RETAIL, available: 'Now' },
     ],
     tint: ['#0E3B60', '#031522'],
   },
@@ -94,33 +116,30 @@ module.exports = [
     name: 'Lakeside Shopping Center',
     city: 'Burbank',
     state: 'CA',
-    postalCode: '91502',
+    postalCode: '91505',
     type: 'Neighborhood Center',
     tagline: 'Dining and everyday retail in the heart of Burbank.',
     cardLine: 'Vons-anchored neighborhood center with dining and services.',
-    address: ['257 N. Pass Avenue', 'Burbank, CA 91502'],
-    addressVerify: true, // ZIP for N. Pass Ave is usually 91505 — confirm
-    mapQuery: '257 N Pass Ave, Burbank, CA',
-    glaSF: 120000,
-    glaApprox: true,
-    glaVerify: true,
-    anchors: ['Vons', 'CVS Pharmacy'],
+    address: ['257–353 N. Pass Avenue', 'Burbank, CA 91505'],
+    mapQuery: '257 N Pass Ave, Burbank, CA 91505',
+    glaSF: 70100,
+    anchors: ['Vons'],
     description: [
-      'Lakeside Shopping Center is a grocery-anchored neighborhood center in Burbank. Vons and CVS Pharmacy anchor a lineup of local restaurants, personal services, and everyday essentials.',
-      'A new regional dining concept has signed on at the center, with an opening expected in early 2027.',
+      'Lakeside Shopping Center is a grocery-anchored neighborhood center in Burbank. Vons anchors a lineup of local restaurants, personal services, and everyday essentials.',
+      'Neighbors stop in for coffee at Starbucks, dinner at Ma’s Italian Kitchen or Lotus & Light, and a scoop at Handel’s Homemade Ice Cream.',
     ],
     highlights: [
       'Grocery-anchored by Vons',
-      'CVS Pharmacy, Bank of America, and Wells Fargo',
-      'Local dining from Ma’s Italian Kitchen to Sushi Koo',
-      'New regional restaurant opening in 2027',
+      'Bank of America, PostalAnnex, and Flair Cleaners',
+      'Local dining from Ma’s Italian Kitchen to Emon Japanese Restaurant',
+      'Starbucks, Panda Express, and Handel’s Homemade Ice Cream',
     ],
     hours: [
       ['Monday – Saturday', '9:00 AM – 9:00 PM'],
       ['Sunday', '10:00 AM – 6:00 PM'],
     ],
     availability: [
-      { suite: 'TBD', sf: null, use: 'Inline retail', available: 'Now', placeholder: true },
+      { suite: '0259', sf: 2060, use: RETAIL, available: 'Now' },
     ],
     tint: ['#0D3754', '#031220'],
   },
